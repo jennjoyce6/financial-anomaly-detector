@@ -1,9 +1,11 @@
+import os
 import streamlit as st
 import pandas as pd
 import sqlite3
 import plotly.express as px
 import plotly.graph_objects as go
 from models.anomaly_detector import AnomalyDetector
+from data.generate_data import generate_transactions, save_to_sqlite
 
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -18,7 +20,11 @@ st.caption("Detects suspicious transactions using Z-score, IQR, and Isolation Fo
 # ── Load data ──────────────────────────────────────────────────────────────────
 @st.cache_data  # cache so the DB isn't re-read on every interaction
 def load_data():
-    conn = sqlite3.connect('data/transactions.db')
+    db_path = 'data/transactions.db'
+    if not os.path.exists(db_path):
+        os.makedirs('data', exist_ok=True)
+        save_to_sqlite(generate_transactions(), db_path)
+    conn = sqlite3.connect(db_path)
     df   = pd.read_sql('SELECT * FROM transactions', conn)
     conn.close()
     return df
