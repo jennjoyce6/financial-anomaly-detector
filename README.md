@@ -62,6 +62,37 @@ financial-anomaly-detector/
 └── requirements.txt
 ```
 
+## MLflow experiment tracking
+
+All model configurations are tracked via MLflow for full reproducibility.
+45 parameter combinations were evaluated across three variables:
+
+| Parameter | Values tested |
+|---|---|
+| `contamination` | 0.03, 0.04, 0.05, 0.06, 0.08 |
+| `z_threshold` | 2.5, 3.0, 3.5 |
+| `iqr_multiplier` | 1.2, 1.5, 1.8 |
+
+**Best run:** 502 anomalies detected at 9.7% detection rate.
+
+### All 45 experiment runs
+
+![MLflow runs table](docs/screenshots/Runs.png)
+
+### Detection rate across all runs
+
+![MLflow chart view](docs/screenshots/mlflow_chartview.png)
+
+### Running experiments locally
+```bash
+# Run all 45 experiment combinations
+python mlflow_experiments/run_experiments.py
+
+# Open MLflow UI to compare runs
+mlflow ui
+# → http://127.0.0.1:5000
+```
+
 ---
 
 ## Running locally

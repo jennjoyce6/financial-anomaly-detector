@@ -14,13 +14,13 @@ class AnomalyDetector:
     - Isolation Forest: ML-based. Catches multi-dimensional anomalies (amount + hour).
     """
 
-    def __init__(self):
+    def __init__(self, contamination: float = 0.06):
         self.scaler = StandardScaler()
         self.iso_forest = IsolationForest(
-            contamination=0.06,  # expect ~3% anomaly rate
+            contamination=contamination,
             random_state=42,
             n_estimators=100,
-        )
+    )
 
     def add_features(self, df: pd.DataFrame) -> pd.DataFrame:
         """Engineer features from raw transaction data."""
