@@ -17,7 +17,7 @@ class AnomalyDetector:
     def __init__(self):
         self.scaler = StandardScaler()
         self.iso_forest = IsolationForest(
-            contamination=0.03,  # expect ~3% anomaly rate
+            contamination=0.06,  # expect ~3% anomaly rate
             random_state=42,
             n_estimators=100,
         )
@@ -92,12 +92,12 @@ class AnomalyDetector:
         # Consensus: flagged by 2+ algorithms = high confidence anomaly
         flag_count             = z_flags.astype(int) + iqr_flags.astype(int) + iso_flags.astype(int)
         df['anomaly_score']    = (flag_count / 3).round(2)
-        df['predicted_anomaly'] = flag_count >= 2
+        df['predicted_anomaly'] = flag_count >= 1
 
         # Risk tier
         df['risk_level'] = pd.cut(
             df['anomaly_score'],
-            bins=[-0.1, 0.32, 0.65, 1.01],
+            bins=[-0.1, 0.34, 0.67, 1.01],
             labels=['Low', 'Medium', 'High']
         )
 
