@@ -4,7 +4,7 @@ A production-style financial transaction monitoring system that detects
 suspicious activity using three statistical and machine learning algorithms, 
 visualized through an interactive real-time dashboard.
 
-**[Live Demo](your-streamlit-url-here)** | **[GitHub](your-github-url-here)**
+**[Live Demo](https://financial-anomaly-detector-kdwrqnaah73fgv5pq37f3t.streamlit.app/)** | **[GitHub](https://github.com/jennjoyce6/financial-anomaly-detector)**
 
 ---
 
