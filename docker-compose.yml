@@ -1,0 +1,7 @@
+services:
+  fraud-detection-api:
+    image: fraud-detection-api
+    container_name: fraud-detection-api
+    ports:
+      - "8000:8000"
+    restart: unless-stopped

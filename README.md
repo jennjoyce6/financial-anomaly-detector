@@ -95,6 +95,65 @@ mlflow ui
 
 ---
 
+## Fraud detection microservice
+
+A containerized REST API wrapping the anomaly detection logic — any system 
+can call it programmatically without touching the dashboard.
+
+### Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/health` | Service health check |
+| POST | `/detect` | Analyze a single transaction |
+| POST | `/detect/batch` | Analyze up to 1,000 transactions |
+| GET | `/stats` | Session detection statistics |
+
+### API docs
+
+![API docs](docs/screenshots/api_docs.png)
+
+### Sample response
+
+![API response](docs/screenshots/api_response.png)
+
+### Running the microservice
+```bash
+# Build the Docker image
+docker build -t fraud-detection-api .
+
+# Run with Docker Compose
+docker compose up
+
+# API available at http://127.0.0.1:8000
+# Interactive docs at http://127.0.0.1:8000/docs
+```
+
+### Example request
+```bash
+curl -X POST http://127.0.0.1:8000/detect \
+  -H "Content-Type: application/json" \
+  -d '{
+    "txn_id":   "TXN-88421",
+    "amount":   48000.00,
+    "txn_type": "wire_transfer",
+    "hour":     23
+  }'
+```
+
+### Example response
+```json
+{
+  "txn_id":        "TXN-88421",
+  "is_anomaly":    true,
+  "risk_level":    "High",
+  "anomaly_score": 1.0,
+  "z_score":       4.21,
+  "iso_score":     -0.18,
+  "flags": ["large_amount", "statistical_outlier", "off_hours"]
+}
+```
+
 ## Running locally
 ```bash
 # 1. Clone the repo
